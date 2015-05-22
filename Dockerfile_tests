@@ -1,0 +1,61 @@
+FROM ubuntu:14.04
+MAINTAINER Patrick Merlot <patrick.merlot@gmail.com>
+
+## inspired from  https://linuxmeerkat.wordpress.com/2014/10/17/running-a-gui-application-in-a-docker-container/
+##          and http://manpages.ubuntu.com/manpages/lucid/man1/xvfb-run.1.html
+
+
+## INSTALL DEPENDENCIES
+RUN apt-get update
+
+RUN apt-get install -y \
+    firefox \
+    python-pip \
+    xpra \
+    xserver-xorg-video-dummy \
+    xvfb
+
+RUN pip install selenium
+
+ADD firefox.py /
+RUN chmod +x firefox.py
+ADD setup.sh /
+RUN chmod +x setup.sh
+ADD dummy.xorg.conf /
+ADD xorg.conf /
+
+
+
+
+RUN apt-get install -y dbus-x11
+
+#RUN echo "export DISPLAY=:0.0" >> /etc/environment
+#RUN export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
+# CMD ["export","LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/"]
+ENV DISPLAY :1.0
+# CMD ["DISPLAY=:1.0"]
+# CMD ["export","DISPLAY"]
+# CMD ["Xvfb",":1","-screen","0","1024x768x24","-extension","RANDR","&>","xvfb.log","&"]
+# CMD ["xhost","+"]
+# CMD ["python","firefox.py"]
+
+
+# RUN ls /Applications/Testing
+# RUN ls ${HOME}/.xpra
+# RUN xpra --xvfb="Xorg +extension GLX -config ${HOME}/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log"  start :9
+#                  Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./10.log -config ./xorg.conf :10
+# RUN ls ${HOME}/.xpra
+# RUN ps aux | grep X
+
+# ENV DISPLAY=:9 python firefox.py
+
+
+# #RUN DISPLAY=:1.0
+# #RUN export DISPLAY
+# RUN echo $DISPLAY
+
+
+# ## RUN firefox
+# #RUN python firefox.py
+
+CMD ["bash","setup.sh"]
