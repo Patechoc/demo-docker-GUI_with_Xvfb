@@ -21,7 +21,6 @@ ADD firefox.py /
 RUN chmod +x firefox.py
 ADD setup.sh /
 RUN chmod +x setup.sh
-ADD dummy.xorg.conf /
 ADD xorg.conf /
 ENV DISPLAY :1.0
 
