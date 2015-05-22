@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+'''
+This file loads a webpage on Firefox, 
+and when the laoding has finished
+it prints the html code source to the terminal
+'''
+
 from selenium import webdriver
 
 browser = webdriver.Firefox()
